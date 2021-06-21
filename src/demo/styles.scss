@@ -1,14 +1,24 @@
+.app {
+  width: 100%;
+  overflow-x: hidden;
+}
 .drawing-board {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
   background-color: #e8e8e8;
-  background-color: #0e0e0e;
+  // background-color: #0e0e0e;
+  // display: none;
 }
-.preview-canvas {
+.preview-canvas,
+.canvas {
   position: absolute;
   top: 0;
   left: 0;
+  max-width: 100%;
+  max-height: 100%;
+}
+.preview-canvas {
   pointer-events: none;
 }
 .menu {
@@ -16,7 +26,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   background-color: #272727;
   z-index: 1;
   height: 50px;

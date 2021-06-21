@@ -2,8 +2,10 @@ import React, { useRef, useEffect, useState } from "react";
 import CanvasApi from "./canvas_API";
 import "./styles.scss";
 import Selector, { Option } from "./selector";
+import Sockets from "./sockets";
 export default function Demo() {
   const [CanvasObject, setCanvasObject] = useState(null);
+  const [socket, setSocket] = useState(null);
   let canvas = useRef(null);
   let preview_canvas = useRef(null);
   const [Options, setOptions] = useState({
@@ -11,26 +13,37 @@ export default function Demo() {
     shape: "stroke",
   });
   // #D56868
+
+  // setup the Canvas Objcet when the canas element has loaded in dom
   useEffect(() => {
-    setCanvasObject(CanvasApi(canvas, preview_canvas));
-    if (canvas)
-      canvas.addEventListener(
-        "interaction",
-        (e) => {}
-        // console.log(e.detail.current_frame)
-      );
-    return () => {
-      if (canvas) canvas.removeEventListener("interaction", () => {});
-    };
+    canvas &&
+      preview_canvas &&
+      setCanvasObject(CanvasApi(canvas, preview_canvas));
   }, []);
+
+  // liseten for change in the drawing optinons
   useEffect(() => {
     if (!CanvasObject) return;
     CanvasObject.setStrokeColor(Options.strokeColor);
     CanvasObject.setShape(Options.shape);
   }, [Options]);
+
+  // listen for the active CanvasObject
+  useEffect(() => {
+    CanvasObject && setSocket(Sockets(CanvasObject.printImage));
+  }, [CanvasObject]);
+
+  // listen for when the socket has been defined
+  useEffect(() => {
+    socket &&
+      canvas.addEventListener("interaction", (e) => {
+        socket && socket.draw(e.detail.current_frame);
+      });
+  }, [socket]);
+
   const shapes = ["Triangle", "Stroke", "Circle", "Rectangle", "Line"];
   return (
-    <div>
+    <div className="app">
       <div className="menu">
         <input
           type="color"
@@ -53,6 +66,7 @@ export default function Demo() {
         )}
       </div>
       <div className="drawing-board">
+        here
         <canvas className="canvas" ref={(el) => (canvas = el)}></canvas>
         <canvas
           className="preview-canvas"
@@ -62,13 +76,3 @@ export default function Demo() {
     </div>
   );
 }
-/*
-(
-              <Option
-              // value={shape.toLowerCase()}
-              // selected={Options.shape === shape.toLowerCase() ? true : false}
-              >
-                shape
-              </Option>
-            )
- */

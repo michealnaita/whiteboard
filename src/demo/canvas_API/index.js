@@ -11,25 +11,25 @@ const CanvasObject = (canvas, preview_canvas) => {
   };
   const state = {
     shape: "stroke",
-    color: "#000000",
-    strokeSize: 4,
+    color: "#ffb500",
+    strokeSize: 8,
   };
-  window.state = state;
+  canvas.state = state;
   setDimentions();
 
   // EVENT LISTENERS
   // window.addEventListener("resize", () => setDimentions());
-  window.addEventListener("mousemove", (e) => {
+  canvas.addEventListener("mousemove", (e) => {
     MOUSE.x = e.clientX;
     MOUSE.y = e.clientY;
   });
-  window.addEventListener("mouseup", () => {
+  canvas.addEventListener("mouseup", () => {
     MOUSE.isMouseDown = false;
   });
-  window.addEventListener("touchend", () => {
+  canvas.addEventListener("touchend", () => {
     MOUSE.isMouseDown = false;
   });
-  window.addEventListener("mousedown", (event) => {
+  canvas.addEventListener("mousedown", (event) => {
     draw(event);
   });
   canvas.addEventListener("touchmove", (e) => {
@@ -50,6 +50,14 @@ const CanvasObject = (canvas, preview_canvas) => {
     },
     setShape: function (shape) {
       state.shape = shape;
+    },
+    printImage: function (imageData) {
+      const image = new Image();
+      image.src = imageData;
+      image.onload = () => {
+        // Context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        // Context.drawImage(image, 0, 0, window.innerWidth, window.innerHeight);
+      };
     },
   });
 
@@ -116,6 +124,7 @@ const CanvasObject = (canvas, preview_canvas) => {
       if (!MOUSE.isMouseDown) {
         rect.clearPreview();
         rect.draw();
+        interaction();
         return;
       }
       const width = MOUSE.x - startX;
@@ -140,6 +149,7 @@ const CanvasObject = (canvas, preview_canvas) => {
       if (!MOUSE.isMouseDown) {
         circle.clearPreview();
         circle.draw();
+        interaction();
         return;
       }
       const deltaX = MOUSE.x - startX;
@@ -162,6 +172,7 @@ const CanvasObject = (canvas, preview_canvas) => {
       if (!MOUSE.isMouseDown) {
         triangle.clearPreview();
         triangle.draw();
+        interaction();
         return;
       }
       const deltaX = MOUSE.x - startX;
@@ -184,6 +195,7 @@ const CanvasObject = (canvas, preview_canvas) => {
       if (!MOUSE.isMouseDown) {
         line.clearPreview();
         line.draw();
+        interaction();
         return;
       }
       line.endX = MOUSE.x;
