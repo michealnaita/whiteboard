@@ -9,10 +9,10 @@ const CanvasObject = (canvas, preview_canvas) => {
     y: 0,
     isMouseDown: false,
   };
-  const state = {
-    shape: "stroke",
-    color: "#ffb500",
-    strokeSize: 8,
+  let state = {
+    activeTool: "pencil",
+    strokeColor: "#ffb500",
+    strokeSize: 1,
   };
   canvas.state = state;
   setDimentions();
@@ -45,11 +45,9 @@ const CanvasObject = (canvas, preview_canvas) => {
   });
   // RETURN OBJECT
   return Object.freeze({
-    setStrokeColor: function (color) {
-      state.color = color;
-    },
-    setShape: function (shape) {
-      state.shape = shape;
+    setCanvasSettings: function ({ strokeSize, strokeColor, activeTool }) {
+      state = { strokeSize, strokeColor, activeTool };
+      setEnv();
     },
     printImage: function (imageData) {
       const image = new Image();
@@ -64,9 +62,9 @@ const CanvasObject = (canvas, preview_canvas) => {
   // ACTIONS
   function setEnv() {
     Context.lineCap = "butt";
-    Context.strokeStyle = state.color;
+    Context.strokeStyle = state.strokeColor;
     Context.lineWidth = state.strokeSize;
-    PreviewContext.strokeStyle = state.color;
+    PreviewContext.strokeStyle = state.strokeColor;
     PreviewContext.lineWidth = state.strokeSize;
   }
   function draw(event) {
@@ -74,8 +72,8 @@ const CanvasObject = (canvas, preview_canvas) => {
     MOUSE.isMouseDown = true;
     const startX = event.clientX;
     const startY = event.clientY;
-    switch (state.shape) {
-      case "stroke":
+    switch (state.activeTool) {
+      case "pencil":
         createStroke(startX, startY);
         break;
       case "circle":

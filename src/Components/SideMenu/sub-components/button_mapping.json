@@ -1,0 +1,68 @@
+[
+  [
+    {
+      "iconUrl": "/assets/icons/triangle.svg",
+      "value": "triangle",
+      "isActive": false,
+      "size": [35, 57]
+    },
+    {
+      "iconUrl": "/assets/icons/circle.svg",
+      "value": "circle",
+      "isActive": false,
+      "size": [35, 57]
+    },
+    {
+      "iconUrl": "/assets/icons/rectangle.svg",
+      "value": "rectangle",
+      "isActive": false,
+      "size": [25, 57]
+    },
+    {
+      "iconUrl": "/assets/icons/text.svg",
+      "value": "text",
+      "isActive": false,
+      "size": [29, 57]
+    },
+    {
+      "iconUrl": "/assets/icons/image.svg",
+      "value": "image",
+      "isActive": false,
+      "size": [29, 57]
+    }
+  ],
+  [
+    {
+      "iconUrl": "/assets/icons/rubber-stroke.svg",
+      "value": "rubber-stroke",
+      "isActive": false,
+      "size": [25, 57]
+    },
+    {
+      "iconUrl": "/assets/icons/rubber-select.svg",
+      "value": "rubber-select",
+      "isActive": false,
+      "size": [35, 57]
+    }
+  ],
+  {
+    "iconUrl": "/assets/icons/pencil.svg",
+    "value": "pencil",
+    "isActive": true,
+    "size": [29, 57]
+  },
+  [
+    {
+      "iconUrl": "/assets/icons/undo.svg",
+      "value": "undo",
+      "isActive": false,
+      "size": [30, 35]
+    },
+    {
+      "iconUrl": "/assets/icons/clear.svg",
+      "value": "clear",
+      "isActive": false,
+      "size": [30, 57]
+    }
+  ]
+]

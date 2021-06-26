@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="43" height="39.739" viewBox="0 0 43 39.739">
+  <defs>
+    <filter id="triangle" x="0" y="0" width="43" height="39.739" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.502"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#triangle)">
+    <g id="triangle-2" data-name="triangle" transform="translate(9 6)" fill="none" stroke-linecap="round">
+      <path d="M12.5,0,25,21.739H0Z" stroke="none"/>
+      <path d="M 12.5 2.006134033203125 L 1.728530883789063 20.7391242980957 L 23.27146911621094 20.7391242980957 L 12.5 2.006134033203125 M 12.5 -5.7220458984375e-06 L 25 21.7391242980957 L 0 21.7391242980957 L 12.5 -5.7220458984375e-06 Z" stroke="none" fill="#fff"/>
+    </g>
+  </g>
+</svg>

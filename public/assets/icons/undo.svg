@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="49.831" height="43" viewBox="0 0 49.831 43">
+  <defs>
+    <filter id="undo" x="0" y="0" width="49.831" height="43" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.502"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#undo)">
+    <path id="undo-2" data-name="undo" d="M34.067,27.994c0-1.392.3-6.9-4.035-11.273-2.87-2.891-6.528-4.383-11.607-4.653a.287.287,0,0,1-.27-.284V5.909a.286.286,0,0,0-.44-.242L2.378,15.769a.285.285,0,0,0,0,.476l15.337,10.1a.282.282,0,0,0,.44-.242v-5.8a.284.284,0,0,1,.3-.284,16.7,16.7,0,0,1,6.9,1.648A17.493,17.493,0,0,1,32.064,27.6a15.211,15.211,0,0,1,1.52,2.82.315.315,0,0,0,.291.2h.206C34.074,29.791,34.067,28.726,34.067,27.994Z" transform="translate(6.75 0.38)" fill="#fff"/>
+  </g>
+</svg>
