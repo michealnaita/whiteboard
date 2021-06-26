@@ -32,14 +32,14 @@ function Canvas({
   }, [canvasConfig]);
   console.log(canvasConfig);
   return (
-    <div>
+    <DrawingBoard>
       <canvas
         ref={(el) => (preview_canvas_ref = el)}
         className="preview-canvas"
       ></canvas>
       <canvas ref={(el) => (canvas_ref = el)} className="canvas"></canvas>
-      {/* <Menu /> */}
-    </div>
+      <Menu />
+    </DrawingBoard>
   );
 }
 
