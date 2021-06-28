@@ -7,7 +7,7 @@ import store from "./logic/redux/store";
 
 ReactDOM.render(
   <Provider store={store}>
-    <div>here</div>
+    <App />
   </Provider>,
   document.getElementById("root")
 );

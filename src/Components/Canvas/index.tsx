@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import CanvasApi from "../../demo/canvas_API";
+import CanvasApi from "./canvas_api";
 import "../../demo/styles.scss";
 import { connect } from "react-redux";
 import Menu from "./menu";
@@ -19,25 +19,31 @@ function Canvas({
     activeTool: string;
   };
 }) {
-  let canvas_ref: any = useRef();
-  let preview_canvas_ref: any = useRef();
+  let canvasRef: any = useRef();
+  let previewCanvasRef: any = useRef();
   const [canvasObject, setCanvasObject] = useState(null);
   useEffect(() => {
-    canvas_ref &&
-      preview_canvas_ref &&
-      setCanvasObject(CanvasApi(canvas_ref, preview_canvas_ref));
+    canvasRef &&
+      previewCanvasRef &&
+      setCanvasObject(
+        CanvasApi({
+          canvasRef,
+          previewCanvasRef,
+          canvasConfig,
+        })
+      );
   }, []);
   useEffect(() => {
-    canvasObject && canvasObject.setCanvasSettings(canvasConfig);
+    // canvasObject && canvasObject.setCanvasSettings(canvasConfig);
+    console.log(canvasObject);
   }, [canvasConfig]);
-  console.log(canvasConfig);
   return (
     <div>
       <canvas
-        ref={(el) => (preview_canvas_ref = el)}
+        ref={(el) => (previewCanvasRef = el)}
         className="preview-canvas"
       ></canvas>
-      <canvas ref={(el) => (canvas_ref = el)} className="canvas"></canvas>
+      <canvas ref={(el) => (canvasRef = el)} className="canvas"></canvas>
       {/* <Menu /> */}
     </div>
   );

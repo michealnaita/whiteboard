@@ -39,6 +39,11 @@ const CanvasObject = (canvas, preview_canvas) => {
     MOUSE.y = clientY;
   });
   canvas.addEventListener("touchstart", (event) => {
+    const button = document.createElement("button");
+    button.focus();
+    button.onfocus = () => {
+      console;
+    };
     event.preventDefault();
     const { clientX, clientY } = event.changedTouches[0];
     draw({ clientX, clientY });
