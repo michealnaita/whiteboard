@@ -1,21 +1,20 @@
-import Demo from "./demo";
-import PlayGround from "./playground";
+import React from "react";
 import SideMenu from "./Components/SideMenu";
 import ClientMenu from "./Components/ClientMenu";
+import { GlobalStyle, theme } from "./Components/styles/global_styles";
 import { ThemeProvider } from "styled-components";
-import { theme, GlobalStyle } from "./Components/styles/global_styles";
 import Canvas from "./Components/Canvas";
+import Demo from "./demo";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
+      <SideMenu />
+      <ClientMenu />
       <GlobalStyle />
-      <>
-        <SideMenu />
-        <ClientMenu />
-        <Canvas />
-      </>
+      <Canvas />
     </ThemeProvider>
+    // <Demo />
   );
 }
 
