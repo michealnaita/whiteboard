@@ -8,9 +8,10 @@ const CanvasObject = (canvas, preview_canvas) => {
     x: 0,
     y: 0,
     isMouseDown: false,
+    points: [],
   };
   let state = {
-    activeTool: "pencil",
+    activeTool: "erase",
     strokeColor: "#ffb500",
     strokeSize: 1,
   };
@@ -22,6 +23,7 @@ const CanvasObject = (canvas, preview_canvas) => {
   canvas.addEventListener("mousemove", (e) => {
     MOUSE.x = e.clientX;
     MOUSE.y = e.clientY;
+    MOUSE.points.push([e.clientX, e.clientY]);
   });
   canvas.addEventListener("mouseup", () => {
     MOUSE.isMouseDown = false;
@@ -41,9 +43,15 @@ const CanvasObject = (canvas, preview_canvas) => {
   canvas.addEventListener("touchstart", (event) => {
     const button = document.createElement("button");
     button.focus();
+<<<<<<< HEAD
     button.onfocus = () => {
       console;
     };
+=======
+    // button.onfocus = () => {
+
+    // };
+>>>>>>> 7da61dd5257c8093bd1e50002daffaf87f6b900f
     event.preventDefault();
     const { clientX, clientY } = event.changedTouches[0];
     draw({ clientX, clientY });
@@ -54,6 +62,8 @@ const CanvasObject = (canvas, preview_canvas) => {
       state = { strokeSize, strokeColor, activeTool };
       setEnv();
     },
+    setStrokeColor: () => {},
+    setShape: () => {},
     printImage: function (imageData) {
       const image = new Image();
       image.src = imageData;
@@ -66,11 +76,11 @@ const CanvasObject = (canvas, preview_canvas) => {
 
   // ACTIONS
   function setEnv() {
-    Context.lineCap = "butt";
-    Context.strokeStyle = state.strokeColor;
-    Context.lineWidth = state.strokeSize;
-    PreviewContext.strokeStyle = state.strokeColor;
-    PreviewContext.lineWidth = state.strokeSize;
+    // Context.lineCap = "butt";
+    // Context.strokeStyle = state.strokeColor;
+    // Context.lineWidth = state.strokeSize;
+    // PreviewContext.strokeStyle = state.strokeColor;
+    // PreviewContext.lineWidth = state.strokeSize;
   }
   function draw(event) {
     // setEnv();
@@ -92,6 +102,9 @@ const CanvasObject = (canvas, preview_canvas) => {
         break;
       case "line":
         createLine(startX, startY);
+        break;
+      case "erase":
+        erase(startX, startY);
         break;
       default:
         break;
@@ -226,6 +239,21 @@ const CanvasObject = (canvas, preview_canvas) => {
       requestAnimationFrame(initDrawing);
     }
   }
-};
 
+  function erase(startX, startY) {
+    Context.beginPath();
+    Context.moveTo(startX, startY);
+    Context.fillRect(startX, startY, 10, 10);
+    requestAnimationFrame(initDrawing);
+    function initDrawing() {
+      if (!MOUSE.isMouseDown) {
+        // interaction();
+        return;
+      }
+      Context.fillRect(MOUSE.x, MOUSE.y, 10, 10);
+      Context.fill();
+      requestAnimationFrame(initDrawing);
+    }
+  }
+};
 export default CanvasObject;

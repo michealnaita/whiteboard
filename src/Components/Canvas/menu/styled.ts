@@ -8,7 +8,7 @@ export const Menu = styled.div`
   border-radius: 5px;
   padding: 15px;
   right: 50%;
-  ${({ theme }) => theme.flex("space-between", "left", "column")}
+  ${({ theme }) => theme.flex("space-around", "left", "column")}
   h4 {
     color: #272727;
     font-weight: 500;

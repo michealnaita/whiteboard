@@ -1,7 +1,7 @@
 class Shape {
-  x;
-  y;
-  Context;
+  x: Number;
+  y: Number;
+  Context: Number;
   PreviewContext;
   constructor(x, y, Context, PreviewContext) {
     this.x = x;
@@ -22,7 +22,7 @@ class Shape {
 }
 
 export class Circle extends Shape {
-  radius;
+  radius: Number;
   constructor({ x, y, radius, Context, PreviewContext }) {
     super(x, y, Context, PreviewContext);
     this.radius = radius;
@@ -37,8 +37,8 @@ export class Circle extends Shape {
 }
 
 export class Rectangle extends Shape {
-  height;
-  width;
+  height: Number;
+  width: Number;
   constructor({ x, y, height, width, Context, PreviewContext }) {
     super(x, y, Context, PreviewContext);
     this.height = height || 0;
@@ -52,9 +52,33 @@ export class Rectangle extends Shape {
     CURRENT_CONTEXT.stroke();
   }
 }
+export class SelectionEraser extends Shape {
+  height: Number;
+  width: Number;
+  constructor({ x, y, height, width, Context, PreviewContext }) {
+    super(x, y, Context, PreviewContext);
+    this.height = height || 0;
+    this.width = width || 0;
+  }
+  draw(context = null) {
+    const CURRENT_CONTEXT = context || this.Context;
+    CURRENT_CONTEXT.setLineDash([5, 5]);
+    CURRENT_CONTEXT.lineWidth = 1;
+    CURRENT_CONTEXT.strokeStyle = "#F5F5F5";
+    CURRENT_CONTEXT.setTransform(1, 0, 0, 1, 0, 0);
+    CURRENT_CONTEXT.beginPath();
+    CURRENT_CONTEXT.rect(this.x, this.y, this.width, this.height);
+    if (CURRENT_CONTEXT !== this.Context) {
+      CURRENT_CONTEXT.stroke();
+    } else {
+      CURRENT_CONTEXT.clearRect(this.x, this.y, this.width, this.height);
+    }
+    CURRENT_CONTEXT.setLineDash([]);
+  }
+}
 
 export class Triangle extends Shape {
-  radius;
+  radius: Number;
   constructor({ x, y, radius, Context, PreviewContext }) {
     super(x, y, Context, PreviewContext);
     this.radius = radius;
@@ -82,8 +106,8 @@ export class Triangle extends Shape {
 }
 
 export class Line extends Shape {
-  endX;
-  endY;
+  endX: Number;
+  endY: Number;
   constructor({ startX, startY, endX, endY, radius, Context, PreviewContext }) {
     super(startX, startY, Context, PreviewContext);
     this.endX = endX;

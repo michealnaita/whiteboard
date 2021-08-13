@@ -1,6 +1,12 @@
 [
   [
     {
+      "iconUrl": "/assets/icons/rectangle.svg",
+      "value": "rectangle",
+      "isActive": false,
+      "size": [25, 57]
+    },
+    {
       "iconUrl": "/assets/icons/triangle.svg",
       "value": "triangle",
       "isActive": false,
@@ -13,10 +19,10 @@
       "size": [35, 57]
     },
     {
-      "iconUrl": "/assets/icons/rectangle.svg",
-      "value": "rectangle",
+      "iconUrl": "/assets/icons/line.svg",
+      "value": "line",
       "isActive": false,
-      "size": [25, 57]
+      "size": [35, 57]
     },
     {
       "iconUrl": "/assets/icons/text.svg",
@@ -34,13 +40,13 @@
   [
     {
       "iconUrl": "/assets/icons/rubber-stroke.svg",
-      "value": "rubber-stroke",
+      "value": "erase",
       "isActive": false,
       "size": [25, 57]
     },
     {
       "iconUrl": "/assets/icons/rubber-select.svg",
-      "value": "rubber-select",
+      "value": "erase-selection",
       "isActive": false,
       "size": [35, 57]
     }

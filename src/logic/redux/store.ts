@@ -1,6 +1,6 @@
 import { createStore, combineReducers, compose, applyMiddleware } from "redux";
 import Canvas from "../../Components/Canvas";
-import canvasReducer from "./ducks/canvas";
+import canvasReducer, { canvasMiddleware } from "./ducks/canvas";
 import thunk from "redux-thunk";
 export const GLOBAL_STATE = {
   canvas_settings: {
@@ -38,7 +38,10 @@ const rootReducer = combineReducers({
   canvas: canvasReducer,
   //   session: sessionReducer,
 });
-const store = createStore(rootReducer, storeEnhancers(applyMiddleware(thunk)));
+const store = createStore(
+  rootReducer,
+  storeEnhancers(applyMiddleware(thunk, canvasMiddleware))
+);
 export default store;
 // auth
 // const LOG_OUT = "LOG_OUT";

@@ -24,9 +24,9 @@ export const theme = {
 
 export const GlobalStyle = createGlobalStyle`
 *{
-    font-family:"Segoe UI"
+    font-family:"Segoe UI";
 }
  ul{
-   list-style:none
+   list-style:none;
  }
 `;

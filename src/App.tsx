@@ -4,6 +4,7 @@ import ClientMenu from "./Components/ClientMenu";
 import { GlobalStyle, theme } from "./Components/styles/global_styles";
 import { ThemeProvider } from "styled-components";
 import Canvas from "./Components/Canvas";
+import Demo from "./demo";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <GlobalStyle />
       <Canvas />
     </ThemeProvider>
+    // <Demo />
   );
 }
 

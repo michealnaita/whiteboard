@@ -35,7 +35,7 @@ function MenuPrompt({
             min="1"
             max="10"
             className="real-slider"
-            value={strokeSize.toString()}
+            value={5}
             onChange={(e) => setStrokeSize(e.target.value)}
           />
           <div className="slider">

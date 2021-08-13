@@ -1,3 +1,4 @@
+import { classicNameResolver } from "typescript";
 import * as Shapes from "./classes";
 interface mouseInterface {
   x: number;
@@ -26,7 +27,7 @@ class Canvas {
   private PreviewContext;
   private shapes;
   private canvas;
-  private history: [string];
+  private history: string[] = [];
   private MOUSE: mouseInterface = {
     x: 0,
     y: 0,
@@ -41,10 +42,10 @@ class Canvas {
   constructor({ canvas_ref, preview_canvas_ref, shapes, canvasConfig }) {
     this.Context = canvas_ref.getContext("2d");
     this.PreviewContext = preview_canvas_ref.getContext("2d");
-    this.init(canvas_ref, preview_canvas_ref);
     this.shapes = shapes;
     this.canvas = canvas_ref;
     this._canvasConfig = canvasConfig;
+    this.init(canvas_ref, preview_canvas_ref);
   }
   private configureCanvas() {
     const { strokeSize, strokeColor } = this._canvasConfig;
@@ -60,26 +61,26 @@ class Canvas {
     preview_canvas_ref.height = window.innerHeight;
     this.configureCanvas();
     //  EVENT LISTENERS
-    canvas_ref.addEventListener("mousemove", (e) => {
+    this.canvas.addEventListener("mousemove", (e) => {
       this.MOUSE.x = e.clientX;
       this.MOUSE.y = e.clientY;
     });
-    canvas_ref.addEventListener("mouseup", () => {
+    this.canvas.addEventListener("mouseup", () => {
       this.MOUSE.isMouseDown = false;
     });
-    canvas_ref.addEventListener("touchend", () => {
+    this.canvas.addEventListener("touchend", () => {
       this.MOUSE.isMouseDown = false;
     });
-    canvas_ref.addEventListener("mousedown", (event) => {
+    this.canvas.addEventListener("mousedown", (event) => {
       this.globalDraw(event);
     });
-    canvas_ref.addEventListener("touchmove", (e) => {
+    this.canvas.addEventListener("touchmove", (e) => {
       e.preventDefault();
       const { clientX, clientY } = e.changedTouches[0];
       this.MOUSE.x = clientX;
       this.MOUSE.y = clientY;
     });
-    canvas_ref.addEventListener("touchstart", (event) => {
+    this.canvas.addEventListener("touchstart", (event) => {
       event.preventDefault();
       const { clientX, clientY } = event.changedTouches[0];
       this.globalDraw({ clientX, clientY });
@@ -96,14 +97,40 @@ class Canvas {
   get canvasConfig() {
     return this._canvasConfig;
   }
-  public drawImage() {
-    this.canvas.drawImage(0, 0, window.innerWidth, window.innerHeight);
+  public drawImage(imageData) {
+    const image = new Image();
+    image.src = imageData;
+    image.onload = () => {
+      this.Context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      this.Context.drawImage(
+        image,
+        0,
+        0,
+        window.innerWidth,
+        window.innerHeight
+      );
+    };
   }
-  public undo() {
-    // logic
+  public undo = () => {
+    const count = this.history.length;
+    if (count === 1) return this.clearCanvas();
+    const previous_frame = this.history[count - 2];
+    this.drawImage(previous_frame);
+    // remove the current image drawing
+    this.history.splice(count - 1, 1);
+    // console.log(previous_frame);
+  };
+  private addToHistory() {
+    const current_frame = this.canvas.toDataURL("image/svg");
+    if (this.history.length === 30) {
+      this.history.splice(0, 1);
+    }
+    this.history.push(current_frame);
+    return current_frame;
   }
   private interationEvent() {
-    const current_frame = this.canvas.toDataURL();
+    const current_frame = this.addToHistory();
+    this.drawImage(current_frame);
     const event = new CustomEvent("interaction", {
       detail: {
         current_frame,
@@ -111,18 +138,42 @@ class Canvas {
     });
     this.canvas.dispatchEvent(event);
   }
-  private clearCanvas() {
-    // logic
-  }
+  public clearCanvas = () => {
+    this.addToHistory();
+    this.Context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  };
   private erase(startX: number, startY: number) {
     // logic
+  }
+  private eraseSelection(startX: number, startY: number) {
+    const selection = new this.shapes.SelectionEraser({
+      x: startX,
+      y: startY,
+      Context: this.Context,
+      PreviewContext: this.PreviewContext,
+    });
+    requestAnimationFrame(() => initDrawing(this));
+    function initDrawing(canvasObject) {
+      if (!canvasObject.MOUSE.isMouseDown) {
+        selection.clearPreview();
+        selection.draw();
+        canvasObject.interationEvent();
+        return;
+      }
+      const width = canvasObject.MOUSE.x - startX;
+      const height = canvasObject.MOUSE.y - startY;
+      selection.width = width;
+      selection.height = height;
+      selection.preview();
+      requestAnimationFrame(() => initDrawing(canvasObject));
+    }
   }
   private globalDraw(event) {
     this.MOUSE.isMouseDown = true;
     const startX = event.clientX;
     const startY = event.clientY;
     switch (this.canvasConfig.activeTool.toLowerCase()) {
-      case "stroke":
+      case "pencil":
         this.drawStroke(startX, startY);
         break;
       case "circle":
@@ -137,6 +188,9 @@ class Canvas {
       case "line":
         this.drawLine(startX, startY);
         break;
+      case "erase-selection":
+        this.eraseSelection(startX, startY);
+        break;
       default:
         break;
     }
@@ -149,19 +203,19 @@ class Canvas {
       Context: this.Context,
       PreviewContext: this.PreviewContext,
     });
-    requestAnimationFrame(initDrawing);
-    function initDrawing() {
-      if (!this.MOUSE.isMouseDown) {
+    requestAnimationFrame(() => initDrawing(this));
+    function initDrawing(canvasObject) {
+      if (!canvasObject.MOUSE.isMouseDown) {
         circle.clearPreview();
         circle.draw();
-        this.interaction();
+        canvasObject.interationEvent();
         return;
       }
-      const deltaX = this.MOUSE.x - startX;
-      const deltaY = this.MOUSE.y - startY;
+      const deltaX = canvasObject.MOUSE.x - startX;
+      const deltaY = canvasObject.MOUSE.y - startY;
       circle.radius = Math.sqrt(deltaX ** 2 + deltaY ** 2);
       circle.preview();
-      requestAnimationFrame(initDrawing);
+      requestAnimationFrame(() => initDrawing(canvasObject));
     }
   }
   private drawTriangle(startX: number, startY: number) {
@@ -171,19 +225,19 @@ class Canvas {
       Context: this.Context,
       PreviewContext: this.PreviewContext,
     });
-    requestAnimationFrame(initDrawing);
-    function initDrawing() {
-      if (!this.MOUSE.isMouseDown) {
+    requestAnimationFrame(() => initDrawing(this));
+    function initDrawing(canvasObject) {
+      if (!canvasObject.MOUSE.isMouseDown) {
         triangle.clearPreview();
         triangle.draw();
-        this.interaction();
+        canvasObject.interationEvent();
         return;
       }
-      const deltaX = this.MOUSE.x - startX;
-      const deltaY = this.MOUSE.y - startY;
+      const deltaX = canvasObject.MOUSE.x - startX;
+      const deltaY = canvasObject.MOUSE.y - startY;
       triangle.radius = Math.sqrt(deltaX ** 2 + deltaY ** 2);
       triangle.preview();
-      requestAnimationFrame(initDrawing);
+      requestAnimationFrame(() => initDrawing(canvasObject));
     }
   }
   private drawRectangle(startX: number, startY: number) {
@@ -193,20 +247,20 @@ class Canvas {
       Context: this.Context,
       PreviewContext: this.PreviewContext,
     });
-    requestAnimationFrame(initDrawing);
-    function initDrawing() {
-      if (!this.MOUSE.isMouseDown) {
+    requestAnimationFrame(() => initDrawing(this));
+    function initDrawing(canvasObject) {
+      if (!canvasObject.MOUSE.isMouseDown) {
         rect.clearPreview();
         rect.draw();
-        this.interaction();
+        canvasObject.interationEvent();
         return;
       }
-      const width = this.MOUSE.x - startX;
-      const height = this.MOUSE.y - startY;
+      const width = canvasObject.MOUSE.x - startX;
+      const height = canvasObject.MOUSE.y - startY;
       rect.width = width;
       rect.height = height;
       rect.preview();
-      requestAnimationFrame(initDrawing);
+      requestAnimationFrame(() => initDrawing(canvasObject));
     }
   }
   private drawLine(startX: number, startY: number) {
@@ -216,18 +270,18 @@ class Canvas {
       Context: this.Context,
       PreviewContext: this.PreviewContext,
     });
-    requestAnimationFrame(initDrawing);
-    function initDrawing() {
-      if (!this.MOUSE.isMouseDown) {
+    requestAnimationFrame(() => initDrawing(this));
+    function initDrawing(canvasObject) {
+      if (!canvasObject.MOUSE.isMouseDown) {
         line.clearPreview();
         line.draw();
-        this.interaction();
+        canvasObject.interationEvent();
         return;
       }
-      line.endX = this.MOUSE.x;
-      line.endY = this.MOUSE.y;
+      line.endX = canvasObject.MOUSE.x;
+      line.endY = canvasObject.MOUSE.y;
       line.preview();
-      requestAnimationFrame(initDrawing);
+      requestAnimationFrame(() => initDrawing(canvasObject));
     }
   }
   private drawStroke(startX: number, startY: number) {
@@ -236,15 +290,15 @@ class Canvas {
     this.Context.lineJoin = "round";
     this.Context.moveTo(startX, startY);
     this.Context.lineTo(startX, startY);
-    requestAnimationFrame(initDrawing);
-    function initDrawing() {
-      if (!this.MOUSE.isMouseDown) {
-        this.interaction();
+    requestAnimationFrame(() => initDrawing(this));
+    function initDrawing(canvasObject) {
+      if (!canvasObject.MOUSE.isMouseDown) {
+        canvasObject.interationEvent();
         return;
       }
-      this.Context.lineTo(this.MOUSE.x, this.MOUSE.y);
-      this.Context.stroke();
-      requestAnimationFrame(initDrawing);
+      canvasObject.Context.lineTo(canvasObject.MOUSE.x, canvasObject.MOUSE.y);
+      canvasObject.Context.stroke();
+      requestAnimationFrame(() => initDrawing(canvasObject));
     }
   }
   private insertImage(startX: number, startY: number) {

@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { changeTool } from "../../../logic/redux/ducks/canvas";
+import * as action from "../../../logic/redux/ducks/canvas";
 import { connect } from "react-redux";
 
 const some_grey = "#292929";
@@ -18,7 +18,9 @@ function select(state) {
 }
 function mapToDispatchProps(dispatch) {
   return {
-    setActiveTool: (tool) => dispatch(changeTool(tool)),
+    setActiveTool: (tool) => dispatch(action.changeTool(tool)),
+    clearCanvas: () => dispatch(action.clearCanvas()),
+    undoCanvasAction: () => dispatch(action.undoCanvasAction()),
   };
 }
 
@@ -27,22 +29,30 @@ function Presets({
   activateTool,
   activeTool,
   setActiveTool,
+  clearCanvas,
+  undoCanvasAction,
 }: {
   preset: presetInterface;
   activateTool: Function;
   activeTool?: String;
   setActiveTool?: Function;
+  clearCanvas?: Function;
+  undoCanvasAction?: Function;
 }) {
-  const presetVaule = preset.value;
   const [minHeight, maxHeight] = preset.size;
   function selectTool(event, preset) {
     event.stopPropagation();
-    setActiveTool(preset.value);
-    if (preset.isActive) {
-      setActiveTool(preset.value);
-    } else {
+    const { value } = preset;
+    if (value === "clear") {
+      return clearCanvas();
+    }
+    if (value === "undo") {
+      return undoCanvasAction();
+    }
+    if (!preset.isActive) {
       activateTool(preset);
     }
+    setActiveTool(value);
   }
   return (
     <Preset
@@ -70,6 +80,8 @@ function Presets({
                     activateTool={activateTool}
                     activeTool={activeTool}
                     setActiveTool={setActiveTool}
+                    undoCanvasAction={undoCanvasAction}
+                    clearCanvas={clearCanvas}
                   />
                 </li>
               ))}

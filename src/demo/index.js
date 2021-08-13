@@ -41,7 +41,7 @@ export default function Demo() {
       });
   }, [socket]);
 
-  const shapes = ["Triangle", "Stroke", "Circle", "Rectangle", "Line"];
+  const shapes = ["Triangle", "Stroke", "Circle", "Rectangle", "Line", "Erase"];
   return (
     <div className="app">
       <div className="menu">
