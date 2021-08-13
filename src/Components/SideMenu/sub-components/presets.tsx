@@ -43,14 +43,14 @@ function Presets({
   function selectTool(event, preset) {
     event.stopPropagation();
     const { value } = preset;
+    if (!preset.isActive) {
+      activateTool(preset);
+    }
     if (value === "clear") {
       return clearCanvas();
     }
     if (value === "undo") {
       return undoCanvasAction();
-    }
-    if (!preset.isActive) {
-      activateTool(preset);
     }
     setActiveTool(value);
   }
@@ -94,6 +94,7 @@ function Presets({
 }
 export default connect(select, mapToDispatchProps)(Presets);
 const Preset = styled.div`
+  transition: 0.2s;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -103,13 +104,16 @@ const Preset = styled.div`
   position: relative;
   width: 100%;
   height: min-content;
+  &:active {
+    opacity: 0.5;
+  }
   &:after {
     transition: 0.2s ease;
     display: block;
     content: "";
     width: 3px;
     height: 100%;
-    background-color: ${({ theme }) => theme.toolbar.highlight_color};
+    background-color: ${({ theme }) => theme.toolbar.highlight};
     position: absolute;
     top: 50%;
     left: 0;
@@ -129,10 +133,9 @@ const Preset = styled.div`
         }
       }
       &.active {
-        background-color: rgba(0, 0, 0, 0.05);
+        /* background-color: rgba(0, 0, 0, 0.05); */
       }
     `}
-  background-color: ${some_grey};
   cursor: pointer;
 
   .extension-button {
@@ -164,7 +167,7 @@ const Preset = styled.div`
     align-items: center;
     width: max-content;
     height: 50px;
-    background-color: ${some_grey};
+    background-color: ${({ theme }) => theme.toolbar.secondary};
     border-radius: 8px;
     padding: 0 10px;
     z-index: -1;
@@ -177,7 +180,7 @@ const Preset = styled.div`
       width: 0;
       height: 0;
       border-top: 8px solid transparent;
-      border-right: 10px solid ${some_grey};
+      border-right: 10px solid ${({ theme }) => theme.toolbar.secondary};
       border-bottom: 8px solid transparent;
       position: absolute;
       top: 50%;

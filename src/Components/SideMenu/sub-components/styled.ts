@@ -1,10 +1,5 @@
 import styled, { css } from "styled-components";
-const some_grey = "#292929";
-const some_other_grey = "#272727";
-
 const shadow = " 0px 3px 6px rgba(0, 0, 0, 70%)";
-const shadow2 = " 0px 3px 6px rgba(0, 0, 0, 0.1)";
-
 // index styles
 export const SideMenu = styled.div`
   transition: 0.5s;
@@ -15,7 +10,7 @@ export const SideMenu = styled.div`
   width: 90px;
   height: 450px;
   border-radius: 15px;
-  background-color: ${some_grey};
+  background-color: ${({ theme }) => theme.toolbar.primary};
   box-shadow: ${shadow};
   z-index: 10;
   ${({ hide }) =>
@@ -33,14 +28,14 @@ export const SideMenu = styled.div`
   }
 `;
 export const PullOut = styled.div`
+  transition: 0.5s;
   position: absolute;
   top: 50%;
   right: -22px;
   transform: translate(0, -50%);
-
   width: 22px;
   height: 65px;
-  background-color: ${some_other_grey};
+  background-color: ${({ theme }) => theme.toolbar.secondary};
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
   /* padding-left: 5px; */

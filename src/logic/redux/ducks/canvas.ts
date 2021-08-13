@@ -1,26 +1,35 @@
 import Storage from "../../../helpers/useLocalStorage";
 
-const [strokeColorLocal] = Storage("stroke_color");
-
 const CHANGE_TOOL = "CHANGE_TOOL";
 const CHANGE_STROKE_COLOR = "CHANGE_STROKE_COLOR";
 const CHANGE_STROKE_SIZE = "CHANGE_STROKE_SIZE";
 const UNDO = "UNDO";
 const CLEAR_ALL = "CLEAR_ALL";
 const SET_CANVAS_METHODS = "SET_CANVAS_METHODS";
+const CHANGE_TOOLBAR_THEME = "CHANGE_TOOLBAR_THEME";
 
-const INITIAL_STATE = {
-  strokeSize: 2,
-  strokeColor: strokeColorLocal || "#000000",
-  activeTool: "pencil",
-  canvasMethods: {},
-};
+const [strokeColorLocal] = Storage("stroke_color");
+const [canvasColorLocal] = Storage("canvas_color");
+const [strokeSizeLocal] = Storage("stroke_size");
+const [toolbarThemeLocal] = Storage("toolbar_theme");
+
 interface stateInterface {
   strokeSize: number;
   strokeColor: string;
   activeTool: string;
   canvasMethods: {};
+  canvasColor: string;
+  toolbarTheme: string;
 }
+const INITIAL_STATE = {
+  strokeSize: strokeSizeLocal || 2,
+  strokeColor: strokeColorLocal || "#000000",
+  activeTool: "pencil",
+  canvasColor: canvasColorLocal || "#E8E8E8",
+  toolbarTheme: toolbarThemeLocal || "dark",
+  canvasMethods: {},
+};
+
 export default function canvasReducer(
   state = INITIAL_STATE,
   action
@@ -32,9 +41,8 @@ export default function canvasReducer(
       return { ...state, strokeColor: action.payload.color };
     case CHANGE_STROKE_SIZE:
       return { ...state, strokeSize: action.payload.size };
-    case CLEAR_ALL:
-      // action.payload.clearCanvasMethod();
-      return state;
+    case CHANGE_TOOLBAR_THEME:
+      return { ...state, toolbarTheme: action.payload.mode };
     case SET_CANVAS_METHODS:
       return {
         ...state,
@@ -75,7 +83,7 @@ export function changeStrokeColor(color: string) {
     },
   };
 }
-export function changeStrokeSize(size: number) {
+export function setStrokeSize(size: number) {
   return {
     type: CHANGE_STROKE_SIZE,
     payload: {
@@ -103,5 +111,11 @@ export function setCanvasMethods(methods: {
     payload: {
       methods,
     },
+  };
+}
+export function setToolbarTheme(mode) {
+  return {
+    type: CHANGE_TOOLBAR_THEME,
+    payload: { mode },
   };
 }

@@ -1,4 +1,4 @@
-export default function useLocalStoraage(key, defaultValue?): [any, Function] {
+export default function useLocalStorage(key, defaultValue?): [any, Function] {
   //  let value:any;
   if (!key) key = "";
   let value = localStorage.getItem(key.toString());

@@ -34,9 +34,9 @@ class Canvas {
     isMouseDown: true,
   };
   private _canvasConfig: stateInterface = {
-    activeTool: "stroke",
-    strokeColor: "#000000",
-    strokeSize: 4,
+    activeTool: "",
+    strokeColor: "",
+    strokeSize: 1,
   };
 
   constructor({ canvas_ref, preview_canvas_ref, shapes, canvasConfig }) {
@@ -50,6 +50,7 @@ class Canvas {
   private configureCanvas() {
     const { strokeSize, strokeColor } = this._canvasConfig;
     this.Context.strokeStyle = strokeColor;
+    this.Context.fillStyle = strokeColor;
     this.Context.lineWidth = strokeSize;
     this.PreviewContext.strokeStyle = strokeColor;
     this.PreviewContext.lineWidth = strokeSize;
@@ -72,7 +73,7 @@ class Canvas {
       this.MOUSE.isMouseDown = false;
     });
     this.canvas.addEventListener("mousedown", (event) => {
-      this.globalDraw(event);
+      event.button === 0 && this.globalDraw(event);
     });
     this.canvas.addEventListener("touchmove", (e) => {
       e.preventDefault();
@@ -301,10 +302,55 @@ class Canvas {
       requestAnimationFrame(() => initDrawing(canvasObject));
     }
   }
-  private insertImage(startX: number, startY: number) {
+  private insertImage = (startX: number, startY: number) => {
     // logic
-  }
-  private insertText(startX: number, startY: number) {
-    // logic
-  }
+  };
+  public insertText = ({
+    startX,
+    startY,
+    width,
+    text,
+    fontSize,
+    lineHeight,
+  }: {
+    startX: number;
+    startY: number;
+    width: number;
+    text: string;
+    fontSize: number;
+    lineHeight: number;
+  }) => {
+    this.Context.textBaseline = "bottom";
+    this.Context.font = `${fontSize}px monospace`;
+    const printAtWordWrap = (text) => {
+      const stringArray = [];
+      const words = text.split(" ");
+      const groupWords = (someWords) => {
+        const [prev_string, string] = someWords;
+        // console.log(prev_string, "+", string);
+        if (!string) {
+          stringArray.push(prev_string);
+          return;
+        }
+        const total_string = [prev_string, string].join(" ");
+        const string_width = this.Context.measureText(total_string).width;
+        // console.log(string_width);
+        if (string_width > width) {
+          stringArray.push(prev_string);
+          const newSomeWords = [...someWords.slice(1)];
+          groupWords(newSomeWords);
+        } else {
+          const newSomeWords = [total_string, ...someWords.slice(2)];
+          groupWords(newSomeWords);
+        }
+      };
+      groupWords(words);
+      stringArray.map((word, i) => {
+        const x = startX;
+        const y = startY + i * lineHeight;
+        this.Context.fillText(word, x, y);
+      });
+    };
+    printAtWordWrap(text);
+  };
 }

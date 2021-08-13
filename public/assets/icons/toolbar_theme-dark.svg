@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="62" height="38" viewBox="0 0 62 38">
-  <g id="toolbar_theme-dark" transform="translate(0.3)">
-    <g id="Rectangle_23" data-name="Rectangle 23" transform="translate(-0.3)" fill="none" stroke="rgba(39,39,39,0.68)" stroke-width="1">
-      <rect width="62" height="38" stroke="none"/>
-      <rect x="0.5" y="0.5" width="61" height="37" fill="none"/>
-    </g>
-    <g id="Group_28" data-name="Group 28" transform="translate(2.057 10.566)">
-      <rect id="Rectangle_24" data-name="Rectangle 24" width="6" height="16" rx="2" transform="translate(-0.356 0.434)" fill="#686868"/>
-      <path id="Rectangle_25" data-name="Rectangle 25" d="M0,0H0A1,1,0,0,1,1,1V3A1,1,0,0,1,0,4H0A0,0,0,0,1,0,4V0A0,0,0,0,1,0,0Z" transform="translate(5.644 6.434)" fill="#686868"/>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="27" height="27" viewBox="0 0 27 27">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.816" y1="0.14" x2="0.5" y2="0.549" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#272727"/>
+      <stop offset="1" stop-color="#6e6e6e" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <g id="toolbar_theme-dark" transform="translate(-699 -751)">
+    <circle id="Ellipse_12" data-name="Ellipse 12" cx="13.5" cy="13.5" r="13.5" transform="translate(699 751)" fill="#272727"/>
+    <circle id="Ellipse_13" data-name="Ellipse 13" cx="13.5" cy="13.5" r="13.5" transform="translate(699 751)" fill="url(#linear-gradient)"/>
   </g>
 </svg>

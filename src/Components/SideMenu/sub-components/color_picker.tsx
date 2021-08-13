@@ -38,9 +38,6 @@ function ColorPicker({
 
   // This function stores the stroke color locallly
   useEffect(() => {
-    if (strokeColorLocal) {
-      // strokeColorLocal !==
-    }
     setStrokeColorLocal("stroke_color", strokeColor);
   }, [strokeColor]);
 
@@ -104,9 +101,7 @@ function ColorPicker({
       setStrokeColorLocal("stroke_color", strokeColor)
     );
   }, []);
-  useEffect(() => {
-    // console.log(colors);
-  }, [storedColors]);
+
   return (
     <div style={{ position: "relative" }}>
       <Color strokeColor={strokeColor} ref={(el) => (colorButtonRef = el)}>
@@ -219,13 +214,30 @@ const PresetColors = styled.ul`
   }
 `;
 const Color = styled.button`
-  width: 75px;
-  height: 75px;
+  width: 70px;
+  height: 70px;
   border-radius: 100%;
   border: 3px solid ${other_grey};
   background-color: ${({ strokeColor }) => strokeColor || "#f55b5b"};
   box-shadow: ${shadow};
   outline: none;
+  position: relative;
+  &:after {
+    display: block;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    background: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2),
+      rgba(0, 0, 0, 0) 45%
+    );
+    /* background-color: red; */
+  }
   &:focus {
     ${PresetColors} {
       opacity: 1;
