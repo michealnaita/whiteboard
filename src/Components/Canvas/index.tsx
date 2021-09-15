@@ -11,7 +11,6 @@ import {
 import positionModel from "../../helpers/positionModel";
 import useLocalStoraage from "../../helpers/useLocalStorage";
 import TextInput from "./textInput";
-import ImageInput from "./imageInput";
 
 function select(state) {
   return {
@@ -128,13 +127,6 @@ function Canvas({
         fontColor={canvasConfig.strokeColor}
         show={showTextInput}
         setShowTextInput={setShowTextInput}
-      />
-      <ImageInput
-        insertText={canvasObject && canvasObject.insertText}
-        activeTool={canvasConfig.activeTool}
-        fontColor={canvasConfig.strokeColor}
-        show={showImageInput}
-        setShowTextInput={setShowImageInput}
       />
     </DrawingBoard>
   );

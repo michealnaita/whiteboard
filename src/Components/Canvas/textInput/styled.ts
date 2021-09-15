@@ -17,14 +17,15 @@ export const InputContainer = styled.div`
 `;
 export const Input = styled.textarea`
   width: 200px;
-  height: 200px;
+  height: 50px;
   border: 1px dashed #f5f5f5;
+  border-radius: 5px;
   background: none;
   outline: none;
   color: ${({ fontColor }) => fontColor};
   padding: 10px;
   font-size: ${({ fontSize }) => fontSize.toString() + "px"};
-  font-family: monospace;
+  font-family: Arial;
   line-height: normal;
 `;
 

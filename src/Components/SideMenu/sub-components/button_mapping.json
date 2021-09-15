@@ -29,12 +29,6 @@
       "value": "text",
       "isActive": false,
       "size": [29, 57]
-    },
-    {
-      "iconUrl": "/assets/icons/image.svg",
-      "value": "image",
-      "isActive": false,
-      "size": [29, 57]
     }
   ],
   [
